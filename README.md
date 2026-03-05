@@ -1,8 +1,6 @@
-# SkyMetrics Weather Dashboard
+# SkyMetrics
 
-This is a React Native iOS app that shows weather forecasts along with battery status. It uses native modules to get real-time battery info and fetches weather data from OpenWeatherMap.
-
----
+A React Native app demonstrating battery info and data display.
 
 ## App Structure
 
@@ -46,22 +44,7 @@ This is a React Native iOS app that shows weather forecasts along with battery s
 
 ---
 
-## How to Use
-
-1. Clone the repo and install dependencies.
-2. Open the iOS project in Xcode and run the app.
-3. On the Dashboard screen:
-   - Battery info is shown at the top.
-   - Weather forecast is displayed in a scrollable list with last sync timestamp.
-4. The app automatically updates battery and weather data in real-time.
-
----
-
 ### Prerequisites
 
 - Node.js >= 22.11.0
 - React Native 0.84.1
-
----
-
-This setup keeps things simple and reactive, ensuring the UI always shows up-to-date battery and weather info without blocking the user interface.
