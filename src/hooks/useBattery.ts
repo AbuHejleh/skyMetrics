@@ -9,6 +9,7 @@ export function useBattery() {
 
   useEffect(() => {
     const subscription = subscribeToBattery(info => {
+      console.log('Battery info updated: ', info);
       setBattery(info);
     });
 
