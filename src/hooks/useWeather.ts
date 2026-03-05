@@ -74,11 +74,11 @@ export function useWeatherForecast() {
     [data],
   );
 
-  const clearWeatherCache = () => {
-    storage.delete(STORAGE_KEY);
-    storage.delete(STORAGE_TIMESTAMP);
-    console.log('Weather cache cleared');
-  };
+  // const clearWeatherCache = () => {
+  //   storage.delete(STORAGE_KEY);
+  //   storage.delete(STORAGE_TIMESTAMP);
+  //   console.log('Weather cache cleared');
+  // };
 
   useEffect(() => {
     // clearWeatherCache();

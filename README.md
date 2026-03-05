@@ -1,97 +1,67 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# SkyMetrics Weather Dashboard
 
-# Getting Started
+This is a React Native iOS app that shows weather forecasts along with battery status. It uses native modules to get real-time battery info and fetches weather data from OpenWeatherMap.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## App Structure
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+- **App.tsx**  
+  Sets up the navigation and safe area for the app. Uses `SafeAreaProvider` and wraps screens with a custom `SafeArea` component. The main navigation stack is `RootStack`.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **Dashboard Screen**  
+  The main screen shows:
+  - `BatteryHeader` — displays current battery level and charging status.
+  - `ForecastListSection` — displays a list of weather forecasts with pull-to-refresh.
 
-```sh
-# Using npm
-npm start
+---
 
-# OR using Yarn
-yarn start
-```
+## Battery Module
 
-## Step 2: Build and run your app
+- **BatteryHeader Component**  
+  Shows battery level (0–100%) and charging status. Uses the `useBattery` hook to receive real-time updates from the native `BatteryModule`.
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+- **useBattery Hook**  
+  Subscribes to battery events emitted from iOS and keeps battery info in React state. Automatically cleans up the listener when the component unmounts.
 
-### Android
+- **BatteryModule JS Bridge**  
+  Provides `subscribeToBattery` to listen for `"BatteryUpdated"` events from the native iOS module.
 
-```sh
-# Using npm
-npm run android
+- **iOS Native Module**  
+  `BatteryModule` is written in Swift and emits battery updates via `RCTEventEmitter`. Events are only sent when a JS listener is active.
 
-# OR using Yarn
-yarn android
-```
+---
 
-### iOS
+## Weather Module
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+- **useWeatherForecast Hook**  
+  Handles fetching, caching, and refreshing weather forecast data.
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+  - Loads cached data first if available.
+  - Fetches fresh data in the background.
+  - Handles errors gracefully, showing cached data if API fails.
 
-```sh
-bundle install
-```
+- **fetchWeatherForecast Function**  
+  Calls the OpenWeatherMap API for a given location. Returns the forecast JSON. Includes a small delay to simulate network latency for testing.
 
-Then, and every time you update your native dependencies, run:
+---
 
-```sh
-bundle exec pod install
-```
+## How to Use
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+1. Clone the repo and install dependencies.
+2. Open the iOS project in Xcode and run the app.
+3. On the Dashboard screen:
+   - Battery info is shown at the top.
+   - Weather forecast is displayed in a scrollable list with last sync timestamp.
+4. The app automatically updates battery and weather data in real-time.
 
-```sh
-# Using npm
-npm run ios
+---
 
-# OR using Yarn
-yarn ios
-```
+### Prerequisites
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+- Node.js >= 22.11.0
+- React Native 0.84.1
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+---
 
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+This setup keeps things simple and reactive, ensuring the UI always shows up-to-date battery and weather info without blocking the user interface.
